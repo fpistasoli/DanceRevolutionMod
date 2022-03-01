@@ -9,6 +9,7 @@ public class MovingArrow : ArrowController
     [SerializeField] private float speed;
 
     private Camera cam;
+    private bool matchingArrows = false;
 
 
     // Start is called before the first frame update
@@ -39,4 +40,28 @@ public class MovingArrow : ArrowController
     {
         transform.Translate(transform.up * speed * Time.deltaTime);
     }
+
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        int directionTypeOther = ((int)collision.gameObject.GetComponent<ArrowController>()?.GetDirection());
+
+        if (directionTypeOther == ((int) GetDirection()))
+        {
+            matchingArrows = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        matchingArrows = false;
+    }
+
+    public bool MatchingArrows()
+    {
+        return matchingArrows;
+    }
+
+
+
 }
